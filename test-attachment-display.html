@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Attachment Display</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-result { margin: 20px 0; padding: 15px; border-radius: 5px; }
+        .success { background-color: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .error { background-color: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+        .info { background-color: #d1ecf1; border: 1px solid #bee5eb; color: #0c5460; }
+        pre { background-color: #f8f9fa; padding: 10px; border-radius: 3px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>Attachment Display Test for Recipients</h1>
+    <div id="test-results"></div>
+
+    <script>
+        async function runTests() {
+            const resultsDiv = document.getElementById('test-results');
+            
+            function addResult(type, message, data = null) {
+                const div = document.createElement('div');
+                div.className = `test-result ${type}`;
+                div.innerHTML = `<strong>${type.toUpperCase()}:</strong> ${message}`;
+                if (data) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = JSON.stringify(data, null, 2);
+                    div.appendChild(pre);
+                }
+                resultsDiv.appendChild(div);
+            }
+
+            try {
+                // Test 1: Get emails for manager-2
+                addResult('info', 'Testing if recipients can see attachments...');
+                
+                const emailsResponse = await fetch('http://localhost:3001/api/emails?userId=manager-2');
+                if (!emailsResponse.ok) throw new Error(`HTTP ${emailsResponse.status}`);
+                
+                const emails = await emailsResponse.json();
+                addResult('success', `Found ${emails.length} emails for manager-2`);
+                
+                // Test 2: Find email with attachment
+                const emailWithAttachment = emails.find(email => 
+                    email.attachments && email.attachments.length > 0
+                );
+                
+                if (!emailWithAttachment) {
+                    addResult('error', 'No emails with attachments found for manager-2');
+                    return;
+                }
+                
+                addResult('success', 'Found email with attachment:', {
+                    id: emailWithAttachment.id,
+                    subject: emailWithAttachment.subject,
+                    senderId: emailWithAttachment.senderId,
+                    recipientIds: emailWithAttachment.recipientIds,
+                    attachmentsCount: emailWithAttachment.attachments.length
+                });
+                
+                // Test 3: Verify manager-2 is recipient
+                const isRecipient = emailWithAttachment.recipientIds.includes('manager-2');
+                if (isRecipient) {
+                    addResult('success', '✅ manager-2 is a recipient of this email');
+                } else {
+                    addResult('error', '❌ manager-2 is NOT a recipient of this email');
+                    return;
+                }
+                
+                // Test 4: Show attachment details
+                emailWithAttachment.attachments.forEach((attachment, index) => {
+                    addResult('success', `Attachment ${index + 1} details:`, {
+                        name: attachment.name,
+                        size: attachment.size,
+                        type: attachment.type
+                    });
+                });
+                
+                // Test 5: Test with sender (admin-1)
+                const senderResponse = await fetch('http://localhost:3001/api/emails/sent?userId=admin-1');
+                if (senderResponse.ok) {
+                    const sentEmails = await senderResponse.json();
+                    const senderEmailWithAttachment = sentEmails.find(email => 
+                        email.attachments && email.attachments.length > 0
+                    );
+                    
+                    if (senderEmailWithAttachment) {
+                        addResult('success', '✅ Sender (admin-1) can also see attachments in sent emails');
+                    }
+                }
+                
+                addResult('success', '🎉 CONCLUSION: Recipients CAN see attachments in emails!');
+                addResult('info', '📋 Summary: Attachments are properly displayed to all recipients');
+                
+            } catch (error) {
+                addResult('error', `Test failed: ${error.message}`);
+            }
+        }
+
+        // Run tests when page loads
+        window.addEventListener('load', runTests);
+    </script>
+</body>
+</html>

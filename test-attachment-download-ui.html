@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Attachment Download UI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .email-item {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            background: #fafafa;
+        }
+        .attachment-item {
+            display: inline-block;
+            margin: 5px;
+            padding: 8px 12px;
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            color: #1976d2;
+        }
+        .attachment-item:hover {
+            background: #bbdefb;
+        }
+        .success {
+            color: #4caf50;
+        }
+        .error {
+            color: #f44336;
+        }
+        .loading {
+            color: #ff9800;
+        }
+        button {
+            background: #2196f3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #1976d2;
+        }
+        .test-results {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background: #f0f8ff;
+            border: 1px solid #b3d9ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test Attachment Download UI</h1>
+        <p>This page tests the attachment download functionality for recipients.</p>
+        
+        <div>
+            <button onclick="testManager2Inbox()">Test Manager-2 Inbox</button>
+            <button onclick="testAdminSent()">Test Admin Sent Items</button>
+            <button onclick="testDownloadLatest()">Test Download Latest Attachment</button>
+        </div>
+        
+        <div id="status"></div>
+        <div id="results"></div>
+        
+        <div class="test-results" id="test-results" style="display: none;">
+            <h3>Test Results</h3>
+            <div id="test-summary"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5050/api';
+        
+        function setStatus(message, type = 'loading') {
+            const statusEl = document.getElementById('status');
+            statusEl.innerHTML = `<span class="${type}">${message}</span>`;
+        }
+        
+        function addResult(message, type = 'success') {
+            const resultsEl = document.getElementById('results');
+            const div = document.createElement('div');
+            div.innerHTML = `<span class="${type}">${message}</span>`;
+            resultsEl.appendChild(div);
+        }
+        
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+            document.getElementById('test-results').style.display = 'none';
+        }
+        
+        async function testManager2Inbox() {
+            clearResults();
+            setStatus('Testing Manager-2 inbox...', 'loading');
+            
+            try {
+                const response = await fetch(`${API_BASE}/emails?userId=manager-2`);
+                const emails = await response.json();
+                
+                setStatus(`Found ${emails.length} emails for manager-2`, 'success');
+                
+                const emailsWithAttachments = emails.filter(email => 
+                    email.attachments && email.attachments.length > 0
+                );
+                
+                addResult(`Found ${emailsWithAttachments.length} emails with attachments`);
+                
+                emailsWithAttachments.forEach(email => {
+                    const emailDiv = document.createElement('div');
+                    emailDiv.className = 'email-item';
+                    emailDiv.innerHTML = `
+                        <strong>Subject:</strong> ${email.subject}<br>
+                        <strong>From:</strong> ${email.senderId}<br>
+                        <strong>Attachments:</strong> ${email.attachments.length}<br>
+                        <div style="margin-top: 10px;">
+                            ${email.attachments.map(att => `
+                                <a href="${API_BASE}/download/${att.filename}" 
+                                   class="attachment-item" 
+                                   download="${att.originalName || att.name}">
+                                    📎 ${att.name} (${att.size} bytes)
+                                </a>
+                            `).join('')}
+                        </div>
+                    `;
+                    document.getElementById('results').appendChild(emailDiv);
+                });
+                
+                if (emailsWithAttachments.length > 0) {
+                    addResult('✅ Recipients can see attachments in their inbox', 'success');
+                }
+                
+            } catch (error) {
+                setStatus(`Error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testAdminSent() {
+            clearResults();
+            setStatus('Testing Admin sent items...', 'loading');
+            
+            try {
+                const response = await fetch(`${API_BASE}/emails/sent?userId=admin-1`);
+                const emails = await response.json();
+                
+                setStatus(`Found ${emails.length} sent emails for admin-1`, 'success');
+                
+                const emailsWithAttachments = emails.filter(email => 
+                    email.attachments && email.attachments.length > 0
+                );
+                
+                addResult(`Found ${emailsWithAttachments.length} sent emails with attachments`);
+                
+                emailsWithAttachments.forEach(email => {
+                    const emailDiv = document.createElement('div');
+                    emailDiv.className = 'email-item';
+                    emailDiv.innerHTML = `
+                        <strong>Subject:</strong> ${email.subject}<br>
+                        <strong>To:</strong> ${email.recipientIds.join(', ')}<br>
+                        <strong>Attachments:</strong> ${email.attachments.length}<br>
+                        <div style="margin-top: 10px;">
+                            ${email.attachments.map(att => `
+                                <a href="${API_BASE}/download/${att.filename}" 
+                                   class="attachment-item" 
+                                   download="${att.originalName || att.name}">
+                                    📎 ${att.name} (${att.size} bytes)
+                                </a>
+                            `).join('')}
+                        </div>
+                    `;
+                    document.getElementById('results').appendChild(emailDiv);
+                });
+                
+                if (emailsWithAttachments.length > 0) {
+                    addResult('✅ Senders can see attachments in sent items', 'success');
+                }
+                
+            } catch (error) {
+                setStatus(`Error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testDownloadLatest() {
+            clearResults();
+            setStatus('Testing download of latest attachment...', 'loading');
+            
+            try {
+                // Get latest email with attachment
+                const response = await fetch(`${API_BASE}/emails?userId=manager-2`);
+                const emails = await response.json();
+                
+                const emailsWithAttachments = emails.filter(email => 
+                    email.attachments && email.attachments.length > 0
+                );
+                
+                if (emailsWithAttachments.length === 0) {
+                    setStatus('No emails with attachments found', 'error');
+                    return;
+                }
+                
+                const latestEmail = emailsWithAttachments[0];
+                const attachment = latestEmail.attachments[0];
+                
+                addResult(`Testing download of: ${attachment.name}`);
+                addResult(`Download URL: ${API_BASE}/download/${attachment.filename}`);
+                
+                // Test if download URL is accessible
+                const downloadResponse = await fetch(`${API_BASE}/download/${attachment.filename}`, {
+                    method: 'HEAD'
+                });
+                
+                if (downloadResponse.ok) {
+                    addResult('✅ Download endpoint is accessible', 'success');
+                    addResult(`Content-Type: ${downloadResponse.headers.get('content-type')}`);
+                    addResult(`Content-Length: ${downloadResponse.headers.get('content-length')} bytes`);
+                    
+                    // Create download link
+                    const downloadLink = document.createElement('a');
+                    downloadLink.href = `${API_BASE}/download/${attachment.filename}`;
+                    downloadLink.download = attachment.originalName || attachment.name;
+                    downloadLink.textContent = `Click to download ${attachment.name}`;
+                    downloadLink.className = 'attachment-item';
+                    downloadLink.style.display = 'block';
+                    downloadLink.style.marginTop = '10px';
+                    document.getElementById('results').appendChild(downloadLink);
+                    
+                    setStatus('✅ Attachment download test completed successfully!', 'success');
+                } else {
+                    addResult(`❌ Download failed: ${downloadResponse.status}`, 'error');
+                }
+                
+            } catch (error) {
+                setStatus(`Error: ${error.message}`, 'error');
+            }
+        }
+        
+        // Auto-test on page load
+        window.onload = function() {
+            setTimeout(() => {
+                testManager2Inbox();
+            }, 1000);
+        };
+    </script>
+</body>
+</html>
