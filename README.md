@@ -19,11 +19,34 @@
 <img width="955" height="368" alt="live-queue" src="https://github.com/user-attachments/assets/49dfd084-154c-4793-afda-e91c423801c4" />
 
 
-# 🚀 SecureMail Enterprise
+# ✨ SecureMail Enterprise
+A powerful, secure internal-only email system built for enterprises, featuring real-time messaging, admin controls, and internal file attachments. Designed for complete internal communication within your organization, this system works both offline and online.
 
-A powerful, secure internal email system built with React and Node.js, featuring real-time messaging, admin controls, and file attachments.
+🔐 Complete Internal-Only Email Communication Solution
+
+SecureMail Internal is a comprehensive platform designed to revolutionize enterprise communication. All emails stay strictly within your organization—no external email integration is possible.
+
+Key Points:
+
+🚫 No External Sending: You cannot send emails to Gmail, Yahoo, Outlook, or any external domains. Communication is strictly internal.
+Example: Only User A and User B created in this system can email each other.
+
+📧 Internal Sending Only: Emails can only be sent between users registered in the system by the administrator.
+
+🚫 No External Receiving: Emails from external services (Gmail, Yahoo, Outlook) will not reach this system.
+
+🛡️ Enhanced Security: Isolated architecture eliminates external hacking risks, phishing attacks, or unauthorized access to sensitive information.
+
+⚡ Offline/Online Capability: Works seamlessly even when network connectivity is down; all internal emails remain accessible.
+
+💰 Cost Savings: Designed to save ~₹16 lakhs yearly for an employee base of ~880 users, ensuring internal security.
+
+📈 Scalable Architecture: Efficiently supports 10 users to unlimited scale.
+
+🏢 Enterprise Ready: Built to meet enterprise-level internal communication requirements.
 
 ## ✨ Features
+
 
 ### 🔐 **Security & Authentication**
 - Role-based access control (Admin, Manager, Agent)
