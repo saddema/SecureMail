@@ -1,22 +1,22 @@
 ## 🖼️ Screenshots
 
 ### Login Page
-![Login Page](images/login-page.png)
+<img width="956" height="413" alt="login-page" src="https://github.com/user-attachments/assets/e5db4517-94d3-4603-be53-0be1695a2763" />
 
 ### SecureMail Inbox View
-![Inbox View](images/inbox-view.png)
+<img width="1909" height="824" alt="inbox-view" src="https://github.com/user-attachments/assets/cb280d07-6e00-41f0-99a5-e4b31cab63e1" />
 
 ### Compose Window
-![Compose Window](images/compose-window.png)
+<img width="788" height="403" alt="compose-window" src="https://github.com/user-attachments/assets/0304dc0c-b41f-4546-b029-b874c6f2d9ed" />
 
 ### User Management
-![User Management](images/user-management.png)
+<img width="953" height="367" alt="user-management" src="https://github.com/user-attachments/assets/18ab1206-ab50-4b07-8767-c7516ee1ab73" />
 
 ### Reports
-![Reports](images/reports.png)
+<img width="954" height="363" alt="reports" src="https://github.com/user-attachments/assets/3e3f6897-4826-412a-9fa5-f7ebe8af8962" />
 
 ### Live Queue
-![Live Queue](images/live-queue.png)
+<img width="955" height="368" alt="live-queue" src="https://github.com/user-attachments/assets/49dfd084-154c-4793-afda-e91c423801c4" />
 
 
 # 🚀 SecureMail Enterprise
