@@ -1,3 +1,24 @@
+## 🖼️ Screenshots
+
+### Login Page
+![Login Page](images/login-page.png)
+
+### SecureMail Inbox View
+![Inbox View](images/inbox-view.png)
+
+### Compose Window
+![Compose Window](images/compose-window.png)
+
+### User Management
+![User Management](images/user-management.png)
+
+### Reports
+![Reports](images/reports.png)
+
+### Live Queue
+![Live Queue](images/live-queue.png)
+
+
 # 🚀 SecureMail Enterprise
 
 A powerful, secure internal email system built with React and Node.js, featuring real-time messaging, admin controls, and file attachments.
